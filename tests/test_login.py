@@ -3,16 +3,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from config import TIMEOUT
+from helpers import registration
 from locators import Locator
 
 
 class TestLogin:
-    _TIMEOUT: float = 2
-
     def test_login_from_home_page_authorization_passed(
-        self, registered: tuple[ChromiumDriver, str, str]
+        self, driver: ChromiumDriver
     ) -> None:
-        driver, email, password = registered
+        email, password = registration(driver)
         driver.find_element(By.XPATH, Locator.btn_login_main).click()
         driver.find_element(By.XPATH, Locator.input_email).send_keys(email)
         driver.find_element(By.XPATH, Locator.input_password).send_keys(
@@ -20,7 +20,7 @@ class TestLogin:
         )
         driver.find_element(By.XPATH, Locator.btn_login).click()
         button_text = (
-            WebDriverWait(driver, self._TIMEOUT)
+            WebDriverWait(driver, TIMEOUT)
             .until(
                 expected_conditions.visibility_of_element_located(
                     (By.XPATH, Locator.btn_checkout)
@@ -28,13 +28,12 @@ class TestLogin:
             )
             .text
         )
-        driver.quit()
         assert button_text == "Оформить заказ"
 
     def test_login_through_personal_account_authorization_passed(
-        self, registered: tuple[ChromiumDriver, str, str]
+        self, driver: ChromiumDriver
     ) -> None:
-        driver, email, password = registered
+        email, password = registration(driver)
         driver.find_element(By.XPATH, Locator.btn_personal_account).click()
         driver.find_element(By.XPATH, Locator.input_email).send_keys(email)
         driver.find_element(By.XPATH, Locator.input_password).send_keys(
@@ -42,7 +41,7 @@ class TestLogin:
         )
         driver.find_element(By.XPATH, Locator.btn_login).click()
         button_text = (
-            WebDriverWait(driver, self._TIMEOUT)
+            WebDriverWait(driver, TIMEOUT)
             .until(
                 expected_conditions.visibility_of_element_located(
                     (By.XPATH, Locator.btn_checkout)
@@ -50,13 +49,12 @@ class TestLogin:
             )
             .text
         )
-        driver.quit()
         assert button_text == "Оформить заказ"
 
     def test_login_through_registration_authorization_passed(
-        self, registered: tuple[ChromiumDriver, str, str]
+        self, driver: ChromiumDriver
     ) -> None:
-        driver, email, password = registered
+        email, password = registration(driver)
         driver.find_element(By.XPATH, Locator.btn_personal_account).click()
         driver.find_element(
             By.XPATH, Locator.btn_registration_for_authorization
@@ -68,7 +66,7 @@ class TestLogin:
         )
         driver.find_element(By.XPATH, Locator.btn_login).click()
         button_text = (
-            WebDriverWait(driver, self._TIMEOUT)
+            WebDriverWait(driver, TIMEOUT)
             .until(
                 expected_conditions.visibility_of_element_located(
                     (By.XPATH, Locator.btn_checkout)
@@ -76,13 +74,12 @@ class TestLogin:
             )
             .text
         )
-        driver.quit()
         assert button_text == "Оформить заказ"
 
     def test_login_through_recovery_authorization_passed(
-        self, registered: tuple[ChromiumDriver, str, str]
+        self, driver: ChromiumDriver
     ):
-        driver, email, password = registered
+        email, password = registration(driver)
         driver.find_element(By.XPATH, Locator.btn_personal_account).click()
         driver.find_element(By.XPATH, Locator.btn_restore_password).click()
         driver.find_element(
@@ -94,7 +91,7 @@ class TestLogin:
         )
         driver.find_element(By.XPATH, Locator.btn_login).click()
         button_text = (
-            WebDriverWait(driver, self._TIMEOUT)
+            WebDriverWait(driver, TIMEOUT)
             .until(
                 expected_conditions.visibility_of_element_located(
                     (By.XPATH, Locator.btn_checkout)
@@ -102,5 +99,4 @@ class TestLogin:
             )
             .text
         )
-        driver.quit()
         assert button_text == "Оформить заказ"

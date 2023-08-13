@@ -3,13 +3,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from config import TIMEOUT
 from locators import Locator
 from utilities import Generator
 
 
 class TestRegister:
-    _TIMEOUT: float = 2
-
     def test_register_successfully_registered(
         self, driver: ChromiumDriver
     ) -> None:
@@ -28,7 +27,7 @@ class TestRegister:
         )
         driver.find_element(By.XPATH, Locator.btn_register).click()
         header = (
-            WebDriverWait(driver, self._TIMEOUT)
+            WebDriverWait(driver, TIMEOUT)
             .until(
                 expected_conditions.visibility_of_element_located(
                     (By.XPATH, Locator.header_authorization)
@@ -36,7 +35,6 @@ class TestRegister:
             )
             .text
         )
-        driver.quit()
         assert header == "Вход"
 
     def test_register_incorrect_password_not_registered(
@@ -65,7 +63,6 @@ class TestRegister:
             )
             .text
         )
-        driver.quit()
         assert message == "Некорректный пароль"
 
     def test_register_empty_name_not_registered(
@@ -83,7 +80,7 @@ class TestRegister:
         )
         driver.find_element(By.XPATH, Locator.btn_register).click()
         header = (
-            WebDriverWait(driver, self._TIMEOUT)
+            WebDriverWait(driver, TIMEOUT)
             .until(
                 expected_conditions.visibility_of_element_located(
                     (By.XPATH, Locator.header_registration)
@@ -91,5 +88,4 @@ class TestRegister:
             )
             .text
         )
-        driver.quit()
         assert header == "Регистрация"
